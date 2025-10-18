@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Role;
+use App\Models\Roles;
 
 class UserFactory extends Factory
 {
@@ -14,7 +14,7 @@ class UserFactory extends Factory
             'nombre' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'password' => Hash::make('password'),
-            'rol_id' => Role::inRandomOrder()->first()?->id ?? 3, // Por defecto cliente
+            'rol_id' => Roles::inRandomOrder()->first()?->id ?? 3, // Por defecto cliente
         ];
     }
 }

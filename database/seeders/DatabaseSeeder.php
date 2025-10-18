@@ -2,9 +2,18 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+ 
+use App\Models\Roles;
+use App\Models\User;
+use App\Models\Cart;
+use App\Models\Product;
+use App\Models\CartItem;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Branch;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,8 +24,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Crear roles
+        
+        Roles::factory()->create([
+            'nombre' => 'admin',
+           
+        ]);
         User::factory()->create([
             'nombre' => 'Juan Carlos Garfias Vilchis',
             'email' => 'juan.garfias1234567890@gmail.com',
