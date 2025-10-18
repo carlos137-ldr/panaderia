@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('nombre', 100);
             $table->string('email', 100)->unique();
             $table->string('password');
-            $table->foreignId('rol_id')->constrained('roles');
+            $table->unsignedBigInteger('rol_id');
+            $table->foreign('rol_id')->references('id')->on('roles')->onDelete('cascade');
             $table->timestamps();
         });
 
