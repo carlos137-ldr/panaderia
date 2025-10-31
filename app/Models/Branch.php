@@ -7,4 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Branch extends Model
 {
     use HasFactory;
+    protected $fillable = [ // Atributos asignables masivamente
+        'nombre',
+        'direccion',
+        'telefono',
+    ];
+    public function orders()
+    {
+        return $this->hasMany(Order::class); // Relación uno a muchos con Order
+    }
+    
 }
