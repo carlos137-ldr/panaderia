@@ -14,7 +14,7 @@ class UserFactory extends Factory
             'nombre' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'password' => Hash::make('password'),
-            'rol_id' => Roles::inRandomOrder()->first()?->id ?? 3, // Por defecto cliente
+            'rol_id' => \App\Models\Roles::all()->random()->id, // Por defecto cliente
         ];
     }
 }

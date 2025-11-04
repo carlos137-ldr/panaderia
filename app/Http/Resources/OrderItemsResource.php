@@ -4,8 +4,10 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\OrderResource;
+use App\Http\Resources\ProductResource;
 
-class OrderItemResource extends JsonResource
+class OrderItemsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +18,18 @@ class OrderItemResource extends JsonResource
     {
         // Define cómo se ve un item del pedido
         return [
-            'cantidad' => $this->cantidad,
-            'precio_unitario' => $this->precio_unitario,
-            // Carga el producto relacionado, usando su propio Resource
-            'product' => new ProductResource($this->whenLoaded('product')),
+            'id' => $this->id,
+            'tipo' => 'Información del Pedido',
+            'atributos' => [ 
+                'Id del pedido' => $this->order_id,
+                'Id del producto' => $this->product_id,
+                'cantidad' => $this->cantidad,
+                'precio unitario' => $this->precio_unitario,
+            ],
+            'relaciones' => [ 
+                'order' => new OrdersResource($this->whenLoaded('order')),
+                'product' => new ProductsResource($this->whenLoaded('product')),
+            ],
         ];
     }
 }

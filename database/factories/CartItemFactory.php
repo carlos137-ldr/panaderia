@@ -11,8 +11,8 @@ class CartItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'cart_id' => Cart::inRandomOrder()->first()?->id,
-            'product_id' => Product::inRandomOrder()->first()?->id,
+            'cart_id' => \App\Models\Cart::all()->random()->id,
+            'product_id' =>  \App\Models\Product::all()->random()->id,
             'cantidad' => $this->faker->numberBetween(1, 5),
         ];
     }

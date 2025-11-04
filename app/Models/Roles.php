@@ -9,6 +9,10 @@ class Roles extends Model
    
     use HasFactory;
 
+    protected $fillable = [ // Atributos asignables masivamente
+        'nombre',
+    ];
+
     public function users()
     {
         return $this->hasMany(User::class, 'rol_id');

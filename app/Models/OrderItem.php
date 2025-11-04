@@ -7,8 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class OrderItem extends Model
 {
     use HasFactory;
-    public function product()
+    protected $fillable = [ // Atributos asignables masivamente
+        'order_id',
+        'product_id',
+        'cantidad',
+        'precio_unitario',
+    ];
+    public function products()
     {
         return $this->belongsTo(Product::class); // Relación inversa con Product
+    }
+    public function orders()
+    {
+        return $this->belongsTo(Order::class); // Relación inversa con Order
     }
 }

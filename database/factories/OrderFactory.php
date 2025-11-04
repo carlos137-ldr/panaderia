@@ -11,8 +11,8 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::inRandomOrder()->first()?->id,
-            'branch_id' => Branch::inRandomOrder()->first()?->id,
+            'user_id' =>  \App\Models\User::all()->random()->id,
+            'branch_id' =>  \App\Models\Branch::all()->random()->id,
             'fecha_pedido' => now(),
             'fecha_recogida' => now()->addDays($this->faker->numberBetween(1, 3)),
             'estado' => $this->faker->randomElement(['pendiente', 'preparando', 'listo']),

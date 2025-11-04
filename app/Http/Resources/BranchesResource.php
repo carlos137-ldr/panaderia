@@ -4,8 +4,9 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\OrderResource;
 
-class BranchResource extends JsonResource
+class BranchesResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,10 +18,17 @@ class BranchResource extends JsonResource
         // Define cómo se debe ver una Sucursal en el JSON
         return [
             'id' => $this->id,
+            'tipo' => 'Sucursal',
+            'atributos' => [ 
             'nombre' => $this->nombre,
             'direccion' => $this->direccion,
             'telefono' => $this->telefono,
-        ];
+            ],
+            'relaciones' => [ 
+                'orders' => OrdersResource::collection($this->whenLoaded('orders')),
+                
+            ],
+    ];
     }
 }
 

@@ -12,7 +12,7 @@ class OrderItemFactory extends Factory
     {
         $producto = Product::inRandomOrder()->first();
         return [
-            'order_id' => Order::inRandomOrder()->first()?->id,
+            'order_id' => \App\Models\Order::all()->random()->id,
             'product_id' => $producto?->id,
             'cantidad' => $this->faker->numberBetween(1, 4),
             'precio_unitario' => $producto?->precio ?? 20.00,

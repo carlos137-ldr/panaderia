@@ -7,13 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class CartItem extends Model
 {
     use HasFactory;
+    protected $fillable = [ // Atributos asignables masivamente
+        'cart_id',
+        'product_id',
+        'cantidad',
+    ];
     
-    public function cart()
+    public function carts()
     {
         return $this->belongsTo(Cart::class);
     }
 
-    public function product()
+    public function products()
     {
         return $this->belongsTo(Product::class);
     }
