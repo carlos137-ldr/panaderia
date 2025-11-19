@@ -13,12 +13,12 @@ class CartItem extends Model
         'cantidad',
     ];
     
-    public function carts()
+    public function cart()
     {
         return $this->belongsTo(Cart::class);
     }
 
-    public function products()
+    public function product()
     {
         return $this->belongsTo(Product::class);
     }

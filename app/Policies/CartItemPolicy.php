@@ -14,7 +14,7 @@ class CartItemPolicy
     {
         //
     }
-
+    //************CART ITEM************* */
     // Determinar si el usuario puede actualizar la CartItem
     public function update(User $user, CartItem $cartitem)
     {
@@ -27,4 +27,8 @@ class CartItemPolicy
         return $user->id === $cartitem->cart_id;
     }
 
+
+     //************BRANCH************* */
+    // Determinar si el usuario puede actualizar la sucursal
+   
 }

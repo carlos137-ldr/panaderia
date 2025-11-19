@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Roles;
+
 return new class extends Migration
 {
     /**
@@ -16,9 +16,7 @@ return new class extends Migration
             $table->string('nombre', 100);
             $table->string('email', 100)->unique();
             $table->string('password');
-            $table->unsignedBigInteger('rol_id');
-            $table->foreign('rol_id')->references('id')->on('roles')->onDelete('cascade');
-            $table->timestamps();
+           $table->timestamps();
         });
 
         

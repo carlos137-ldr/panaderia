@@ -6,7 +6,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
  
-use App\Models\Roles;
 use App\Models\User;
 use App\Models\Cart;
 use App\Models\Product;
@@ -24,20 +23,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Crear roles
-        
-        Roles::factory()->createMany([
-            ['nombre' => 'admin'],
-            ['nombre' => 'cliente'],
-            ['nombre' => 'empleado'],
-        ]);
+        $this ->call(RolSeeder::class);
+
         User::factory()->create([
             'nombre' => 'Juan Carlos Garfias Vilchis',
             'email' => 'juan.garfias1234567890@gmail.com',
             'password' => bcrypt('admin12345'),
-            'rol_id' => 1, // Asignar rol de Administrador
-        ]);
-        User::factory(15)->create();
+             ])-> assignRole('Administrador'); // Asignar rol de Administrador al usuario creado
+           
+                 User::factory()->create([
+            'nombre' => 'Luis Miguel Garfias Vilchis',
+            'email' => 'miguel@gmail.com',
+            'password' => bcrypt('admin12345'),
+             ])-> assignRole('Empleado'); // Asignar rol de Administrador al usuario creado
+           
+         User::factory(29)->create()->each(function ($user) {
+            $user->assignRole('Usuario');
+        });  // Crear 29 usuarios y les asigna el rol de Usuario
+
         Branch::factory(3)->create();
         Product::factory(50)->create();
         Cart::factory(10)->create()->each(function ($cart) {

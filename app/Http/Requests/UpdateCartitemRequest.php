@@ -22,7 +22,7 @@ class UpdateCartitemRequest extends FormRequest
     public function rules(): array
     {
         return [
-              'cart_id' => 'sometimes|exists:carts,id',
+            'cart_id' => 'sometimes|exists:carts,id',
             'product_id' => 'sometimes|exists:products,id',
             'cantidad' => 'sometimes|integer|min:1',
         ];

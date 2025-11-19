@@ -14,11 +14,13 @@ use Symfony\Component\HttpFoundation\Response;
 class CartController extends Controller
 {
  public function index(){
+     $this->authorize('Ver carrito'); 
    $cart = cart::with('users','cartitems', 'products')->get(); 
     return CartsResource::collection($cart);
  }
 
  public function show(cart $cart){
+    $this->authorize('Ver carrito');
     $cart = $cart -> load('users','cartitems', 'products');
     if(!$cart){
         return response()->json(['message' => 'Carrito no encontrado'], 404);
@@ -26,6 +28,7 @@ class CartController extends Controller
     return new CartsResource($cart);
  }
  public function store(StorecartRequest $request){
+    $this->authorize('Crear carrito');
     $cart = cart::create ($request-> validated());
    // $cart -> orders() -> sync($request->intput('user','cartitems', 'products', [])); // Sincronizar las órdenes relacionadas
    $cart -> user() -> associate(User::find($request->input('user_id'))); // Asociar el usuario al carrito
@@ -34,6 +37,8 @@ class CartController extends Controller
     return response()->json (new CartsResource($cart), Response::HTTP_CREATED);
  }
     public function update(UpdatecartRequest $request, $id){
+        $this->authorize('Editar carrito');
+        $this->authorize('update', $cart);
         // Actualizar una sucursal existente
         $cart = cart::find($id); // Buscar la sucursal por ID
         if(!$cart){ // Si no se encuentra, devolver un error 404
@@ -46,6 +51,8 @@ class CartController extends Controller
         return response()->json (new CartsResource($cart), Response::HTTP_ACCEPTED); // Devolver la sucursal actualizada
     }
     public function destroy($id){
+        $this->authorize('Eliminar carrito');
+        $this->authorize('delete', $cart);
         // Eliminar una sucursal existente
         $cart = cart::find($id); // Buscar la sucursal por ID
         if(!$cart){ // Si no se encuentra, devolver un error 404

@@ -13,11 +13,13 @@ use Symfony\Component\HttpFoundation\Response;
 class BranchController extends Controller
 {
 public function index(){
+    $this->authorize('Ver sucursal'); 
     $branch = Branch::with('orders')->get();
     return BranchesResource::collection($branch);
  }
 
  public function show(Branch $branch){
+    $this->authorize('Ver sucursal'); 
     $branch = $branch -> load('orders');
     if(!$branch){
         return response()->json(['message' => 'Sucursal no encontrada'], 404);
@@ -25,11 +27,15 @@ public function index(){
     return new BranchesResource($branch);
  }
  public function store(StoreBranchRequest $request){
+    $this->authorize('Crear sucursal'); 
     $branch = Branch::create ($request-> validated());
     $branch -> orders() -> sync($request->intput('orders', [])); 
     return response()->json (new BranchesResource($branch), Response::HTTP_CREATED);
  }
     public function update(UpdateBranchRequest $request, $id){
+        $this->authorize('Editar sucursal'); 
+        $this->authorize('update', $branch);
+        $branch->update($request->all());
         // Actualizar una sucursal existente
         $branch = Branch::find($id); // Buscar la sucursal por ID
         if(!$branch){ // Si no se encuentra, devolver un error 404
@@ -40,6 +46,9 @@ public function index(){
         return response()->json (new BranchesResource($branch), Response::HTTP_ACCEPTED); // Devolver la sucursal actualizada
     }
     public function destroy($id){
+         $this->authorize('Eliminar sucursal');
+        $this->authorize('delete', $branch);
+         $branch->delete();
         // Eliminar una sucursal existente
         $branch = Branch::find($id); // Buscar la sucursal por ID
         if(!$branch){ // Si no se encuentra, devolver un error 404

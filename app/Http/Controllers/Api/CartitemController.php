@@ -11,49 +11,57 @@ use App\Http\Resources\CartItemsResource;
 use App\Http\Requests\StoreCartitemRequest;
 use App\Http\Requests\UpdateCartitemRequest;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 class CartitemController extends Controller
 {
-   public function index(){
-    $cartitem = CartItem::with('carts', 'products')->get();
-    return CartItemsResource::collection($cartitem);
- }
+    use AuthorizesRequests;
 
- public function show(CartItem $cartitem){
-    $cartitem = $cartitem -> load('carts', 'products');
-    if(!$cartitem){
-        return response()->json(['message' => 'Articulo del carrito no encontrado'], 404);
+    public function index(){
+        $this->authorize('Ver item_carrito');
+        $cartitem = CartItem::with('cart', 'product')->get();
+        return CartItemsResource::collection($cartitem);
     }
-    return new CartItemsResource($cartitem);
- }
- public function store(StorecartitemRequest $request){
-    $cartitem = cartitem::create ($request-> validated());
-    //$cartitem -> orders() -> sync($request->intput('cart', []));
-    $cartitem -> cart() -> associate(Cart::find($request->input('cart_id'))); // Asociar el carrito al cartitem
-    $cartitem -> product() -> associate(Product::find($request->input('product_id'))); // Asociar el producto al cartitem
-    $cartitem -> save(); 
-    return response()->json (new CartItemsResource($cartitem), Response::HTTP_CREATED);
- }
-    public function update(UpdatecartitemRequest $request, $id){
-        // Actualizar una Articulo del carrito existente
-        $cartitem = cartitem::find($id); // Buscar la Articulo del carrito por ID
-        if(!$cartitem){ // Si no se encuentra, devolver un error 404
-            return response()->json(['message' => 'Articulo del carrito no encontrado'], 404);
-        }
-       // $cartitem -> update ($request-> validated()); // Actualizar la sucursal con los datos validados
-       // $cartitem -> orders() -> sync($request->intput('orders', []));// Sincronizar las órdenes relacionadas
-         $cartitem -> cart() -> associate(Cart::find($request->input('cart_id'))); // Asociar el carrito al cartitem
-            $cartitem -> product() -> associate(Product::find($request->input('product_id'))); // Asociar el producto al cartitem
-            $cartitem -> save();
-        return response()->json (new CartItemsResource($cartitem), Response::HTTP_ACCEPTED); // Devolver la Articulo del carrito actualizada
+
+    public function show(CartItem $cartitem){
+        $this->authorize('Ver item_carrito');
+        $cartitem = $cartitem->load('cart', 'product');
+        return new CartItemsResource($cartitem);
     }
-    public function destroy($id){
-        // Eliminar una Articulo del carrito existente
-        $cartitem = cartitem::find($id); // Buscar la Articulo del carrito por ID
-        if(!$cartitem){ // Si no se encuentra, devolver un error 404
-            return response()->json(['message' => 'Articulo del carrito no encontrado'], 404);
-        }
-        $cartitem -> delete(); // Eliminar la Articulo del carrito
-        return response()->json (null, Response::HTTP_NO_CONTENT); // Devolver una respuesta sin contenido
+
+    public function store(StorecartitemRequest $request){
+        $this->authorize('Crear item_carrito');
+
+        $cartitem = CartItem::create($request->validated());
+        $cartitem->cart()->associate(Cart::find($request->input('cart_id')));
+        $cartitem->product()->associate(Product::find($request->input('product_id')));
+        $cartitem->save();
+
+        return response()->json(new CartItemsResource($cartitem), Response::HTTP_CREATED);// respuesta 201
+    }
+
+    public function update(UpdatecartitemRequest $request,CartItem $cartitem){
+        $this->authorize('Editar item_carrito');
+
+        $this->authorize('update', $cartitem); //  ahora sí se puede autorizar
+        // $cartitem = CartItem::find($cartitem); //  primero lo buscamos
+
+        if(!$cartitem){
+            return response()->json(['message' => 'Artículo del carrito no encontrado'], 404);
+        }       
+        $cartitem->update($request->all());// se actualiza el cartitem
+
+        return response()->json(new CartItemsResource($cartitem), Response::HTTP_ACCEPTED);// respuesta 202
+    }
+
+    public function destroy(CartItem $cartitem){
+        $this->authorize('Eliminar item_carrito');
+        
+        $this->authorize('delete', $cartitem); //  ya existe, ahora se autoriza
+
+        $cartitem->delete();
+
+        return response()->json(null, Response::HTTP_NO_CONTENT);// respuesta 204
     }
 }
