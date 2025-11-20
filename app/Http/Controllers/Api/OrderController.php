@@ -3,58 +3,69 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Order;
-use App\Models\Product;
-use App\Models\Branch;
 use App\Models\User;
+use App\Models\Branch;
 use App\Http\Resources\OrdersResource;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class OrderController extends Controller
 {
-   public function index(){
-    $order = Order::with('branch', 'users')->get();
-    return OrdersResource::collection($order);
- }
+    use AuthorizesRequests;
 
- public function show(Order $order){
-    $order = $order -> load('branch', 'users');
-    if(!$order){
-        return response()->json(['message' => 'orden no encontrada'], 404);
+    public function index()
+    {
+        $this->authorize('Ver orden');
+        $orders = Order::with(['branch', 'users'])->get();
+        return OrdersResource::collection($orders);
     }
-    return new OrdersResource($order);
- }
- public function store(StoreorderRequest $request){
-    $order = order::create ($request-> validated());
-    //$order -> orders() -> sync($request->intput('orders', [])); 
-    $order -> branch() -> associate(Branch::find($request->input('branch_id'))); // Asociar la orden al pedido
-    $order -> user() -> associate(User::find($request->input('user_id'))); // Asociar el usuario al pedido
-    $order -> save();
-    return response()->json (new OrdersResource($order), Response::HTTP_CREATED);
- }
-    public function update(UpdateorderRequest $request, $id){
-        // Actualizar una orden existente
-        $order = order::find($id); // Buscar la orden por ID
-        if(!$order){ // Si no se encuentra, devolver un error 404
-            return response()->json(['message' => 'orden no encontrada'], 404);
-        }
-        $order -> update ($request-> validated()); // Actualizar la orden con los datos validados
-        //$order -> orders() -> sync($request->intput('orders', []));// Sincronizar las órdenes relacionadas
-        $order -> branch() -> associate(Branch::find($request->input('branch_id'))); // Asociar la orden al pedido
-        $order -> user() -> associate(User::find($request->input('user_id'))); // Asociar el usuario al pedido
-        $order -> save();
-        return response()->json (new OrdersResource($order), Response::HTTP_ACCEPTED); // Devolver la orden actualizada
+
+    public function show(Order $order)
+    {
+        $this->authorize('Ver orden');
+        $order->load(['branch', 'users']);
+        return new OrdersResource($order);
     }
-    public function destroy($id){
-        // Eliminar una orden existente
-        $order = order::find($id); // Buscar la orden por ID
-        if(!$order){ // Si no se encuentra, devolver un error 404
-            return response()->json(['message' => 'orden no encontrada'], 404);
+
+    public function store(StoreOrderRequest $request)
+    {
+        $this->authorize('Crear orden');
+        
+        // create() usará los datos validados. user_id y branch_id deben estar en $fillable
+        $order = Order::create($request->validated());
+        
+        return response()->json(new OrdersResource($order), Response::HTTP_CREATED);
+
+    }
+
+    public function update(UpdateOrderRequest $request, Order $order)
+    {
+        $this->authorize('Editar orden');
+        // $this->authorize('update', $order);
+
+        $order->update($request->validated());
+        
+        // Si necesitas re-asociar branch o user manualmente (normalmente update ya lo hace si están en el request)
+        if($request->has('branch_id')) {
+            $order->branch()->associate(Branch::find($request->input('branch_id')));
         }
-        $order -> delete(); // Eliminar la orden
-        return response()->json (null, Response::HTTP_NO_CONTENT); // Devolver una respuesta sin contenido
+        if($request->has('user_id')) {
+            $order->user()->associate(User::find($request->input('user_id')));
+        }
+        $order->save();
+
+        return response()->json(new OrdersResource($order), Response::HTTP_ACCEPTED);
+    }
+
+    public function destroy(Order $order)
+    {
+        $this->authorize('Eliminar orden');
+        // $this->authorize('delete', $order);
+
+        $order->delete();
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }
