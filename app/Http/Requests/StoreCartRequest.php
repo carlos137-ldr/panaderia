@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;  // Importar la interfaz Validator 
+use Illuminate\Http\Exceptions\HttpResponseException;  // Importar la excepción HttpResponseException
 
 class StoreCartRequest extends FormRequest
 {
@@ -24,5 +26,13 @@ class StoreCartRequest extends FormRequest
         return [
             'user_id' => 'required|exists:users,id',
         ];
+    }
+    // Manejar la falla de validación y devolver una respuesta JSON personalizada
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'message' => 'Error de validación',
+            'errors' => $validator->errors()
+        ], 422));
     }
 }

@@ -13,6 +13,16 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         //
+        // Añadir el middleware de Sanctum para las peticiones API 
+        // Asegura que las cookies de sesión se manejen correctamente
+        $middleware->api(prepend: [
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        ]);
+
+        // Las rutas que coincidan con estos patrones no requerirán un token CSRF (Cross-Site Request Forgery)
+        $middleware->validateCsrfTokens(except: [
+            'http://localhost:8000/*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
