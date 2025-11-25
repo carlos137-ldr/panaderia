@@ -9,14 +9,13 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\OrderitemController;
 use App\Http\Controllers\Api\LoginController;
-//use App\Http\Controllers\Api\LoginController;
 
-route ::post ('login', [LoginController::class, 'store']);
+Route::post('login', [LoginController::class, 'store'])->name('login');
 // Esto ayuda a evitar problemas de CORS en aplicaciones web que consumen esta API 
 Route::options('{all:.*}', function(){
     return response()->json();
 });
-route ::middleware('auth:sanctum')->group(function () { // Rutas protegidas por autenticación
+Route::middleware('auth:sanctum')->group(function () { // Rutas protegidas por autenticación
 Route::apiResource('orderitems', OrderitemController::class);
 Route::apiResource('products', ProductController::class);
 Route::apiResource('carts', CartController::class);

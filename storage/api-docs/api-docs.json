@@ -615,7 +615,7 @@
         "/api/login": {
             "post": {
                 "tags": [
-                    "Login"
+                    "Auth"
                 ],
                 "summary": "Iniciar sesión",
                 "description": "Inicia sesión y retorna un token de acceso",
@@ -1367,13 +1367,6 @@
     },
     "components": {
         "securitySchemes": {
-            "sanctum": {
-                "type": "http",
-                "name": "Authorization",
-                "in": "header",
-                "bearerFormat": "token",
-                "scheme": "bearer"
-            },
             "bearer_token": {
                 "type": "http",
                 "scheme": "bearer",
@@ -1396,8 +1389,8 @@
             "description": "CartItems"
         },
         {
-            "name": "Login",
-            "description": "Login"
+            "name": "Auth",
+            "description": "Auth"
         },
         {
             "name": "Orders",

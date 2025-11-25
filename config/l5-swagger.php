@@ -174,9 +174,10 @@ return [
 
                 /*
                 // Sanctum Authentication 
+                */
                 'bearer_token' => [ 
                     'type' => 'apiKey',
-                    'description' => 'Sanctum bearer token',
+                    'description' => 'Enter token in format (Bearer <token>)',
                     'name' => 'Authorization',
                     'in' => 'header',
                 ],

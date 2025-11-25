@@ -28,8 +28,8 @@ class ProductsResource extends JsonResource
                 'stock' => $this->stock,
             ],
             'relaciones' => [ 
-                'cartItems' => CartItemsResource::collection($this->whenLoaded('cartItems')),
-                'carts' => CartsResource::collection($this->whenLoaded('carts')),
+                //'cartItems' => CartItemsResource::collection($this->whenLoaded('cartItems')),
+                //'carts' => CartsResource::collection($this->whenLoaded('carts')),
                 'orderItems' => OrderItemsResource::collection($this->whenLoaded('orderItems')),
             ],
 

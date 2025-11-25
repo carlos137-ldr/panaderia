@@ -29,8 +29,8 @@ class OrdersResource extends JsonResource
                 
             ],
             'relaciones' => [ 
-                'branch' => new BranchesResource($this->whenLoaded('branch')),
-                'user' => new UsersResource($this->whenLoaded('user')),
+                //'branch' => new BranchesResource($this->whenLoaded('branch')),
+                //'user' => new UsersResource($this->whenLoaded('user')),
             ],
         ];
     }

@@ -16,7 +16,7 @@ class LoginController extends Controller
      *    path="/api/login",
      *    summary="Iniciar sesión",
      *    description="Inicia sesión y retorna un token de acceso",
-     *    tags={"Login"},
+     *    tags={"Auth"},
      *    @OA\RequestBody(
      *       required=true,
      *       @OA\JsonContent(
