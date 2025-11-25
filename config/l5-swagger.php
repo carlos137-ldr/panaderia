@@ -171,6 +171,7 @@ return [
         'securityDefinitions' => [
             'securitySchemes' => [
                 
+
                 /*
                 // Sanctum Authentication 
                 'bearer_token' => [ 
@@ -225,6 +226,12 @@ return [
                     'in' => 'header', // The location of the API key. Valid values are "query" or "header".
                 ],
                 */
+                'bearer_token' =>[
+'type' => 'http',
+'scheme' =>'bearer',
+'bearerFormat' =>'JWT',
+'description' =>'Bearer token en el header Authorization',
+                ],
             ],
             'security' => [
                 /*

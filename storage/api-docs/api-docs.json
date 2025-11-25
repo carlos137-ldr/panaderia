@@ -1373,6 +1373,12 @@
                 "in": "header",
                 "bearerFormat": "token",
                 "scheme": "bearer"
+            },
+            "bearer_token": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "description": "Bearer token en el header Authorization"
             }
         }
     },
