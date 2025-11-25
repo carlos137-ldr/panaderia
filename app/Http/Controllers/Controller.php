@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
  *     version="1.0.0"
  * )
  * @OA\SecurityScheme(
- *     securityScheme="sanctum",
+ *     securityScheme="bearer_token",
  *     type="http", 
  *     scheme="bearer",
  *     bearerFormat="token",

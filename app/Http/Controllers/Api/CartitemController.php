@@ -18,18 +18,95 @@ class CartitemController extends Controller
 {
     use AuthorizesRequests;
 
+    /**
+     * @OA\Get(
+     *    path="/api/cartitems",
+     *    summary="Consultar items del carrito",
+     *    description="Retorna todos los items del carrito",
+     *    tags={"CartItems"},
+     *    security={{"bearer_token":{}}},
+     *    @OA\Response(
+     *       response=200,
+     *      description="Operación exitosa",
+     *   ),
+     *   @OA\Response(
+     *     response=403,
+     *     description="No autorizado"
+     *   )
+     * )
+     */
     public function index(){
         $this->authorize('Ver item_carrito');
         $cartitem = CartItem::with('cart', 'product')->get();
         return CartItemsResource::collection($cartitem);
     }
 
+    /**
+     * @OA\Get(
+     *    path="/api/cartitems/{cartitem}",
+     *    summary="Consultar un item del carrito",
+     *    description="Retorna un item del carrito específico",
+     *    tags={"CartItems"},
+     *    security={{"bearer_token":{}}},
+     *    @OA\Parameter(
+     *       name="cartitem",
+     *       in="path",
+     *       description="ID del item del carrito",
+     *       required=true,
+     *       @OA\Schema(
+     *           type="integer"
+     *       )
+     *    ),
+     *    @OA\Response(
+     *       response=200,
+     *       description="Operación exitosa",
+     *    ),
+     *    @OA\Response(
+     *       response=404,
+     *       description="Item no encontrado"
+     *    ),
+     *    @OA\Response(
+     *       response=403,
+     *       description="No autorizado"
+     *    )
+     * )
+     */
     public function show(CartItem $cartitem){
         $this->authorize('Ver item_carrito');
         $cartitem = $cartitem->load('cart', 'product');
         return new CartItemsResource($cartitem);
     }
 
+    /**
+     * @OA\Post(
+     *    path="/api/cartitems",
+     *    summary="Agregar item al carrito",
+     *    description="Crea un nuevo item en el carrito",
+     *    tags={"CartItems"},
+     *    security={{"bearer_token":{}}},
+     *    @OA\RequestBody(
+     *       required=true,
+     *       @OA\JsonContent(
+     *          required={"cart_id","product_id","cantidad"},
+     *          @OA\Property(property="cart_id", type="integer", example=1),
+     *          @OA\Property(property="product_id", type="integer", example=1),
+     *          @OA\Property(property="cantidad", type="integer", example=2)
+     *       )
+     *    ),
+     *    @OA\Response(
+     *       response=201,
+     *       description="Item creado",
+     *    ),
+     *    @OA\Response(
+     *       response=403,
+     *       description="No autorizado"
+     *    ),
+     *    @OA\Response(
+     *       response=422,
+     *       description="Error de validación"
+     *    )
+     * )
+     */
     public function store(StorecartitemRequest $request){
         $this->authorize('Crear item_carrito');
 
@@ -41,6 +118,44 @@ class CartitemController extends Controller
         return response()->json(new CartItemsResource($cartitem), Response::HTTP_CREATED);// respuesta 201
     }
 
+    /**
+     * @OA\Put(
+     *    path="/api/cartitems/{cartitem}",
+     *    summary="Actualizar item del carrito",
+     *    description="Actualiza un item existente en el carrito",
+     *    tags={"CartItems"},
+     *    security={{"bearer_token":{}}},
+     *    @OA\Parameter(
+     *       name="cartitem",
+     *       in="path",
+     *       description="ID del item del carrito",
+     *       required=true,
+     *       @OA\Schema(
+     *           type="integer"
+     *       )
+     *    ),
+     *    @OA\RequestBody(
+     *       required=true,
+     *       @OA\JsonContent(
+     *          @OA\Property(property="cart_id", type="integer", example=1),
+     *          @OA\Property(property="product_id", type="integer", example=1),
+     *          @OA\Property(property="cantidad", type="integer", example=3)
+     *       )
+     *    ),
+     *    @OA\Response(
+     *       response=202,
+     *       description="Item actualizado",
+     *    ),
+     *    @OA\Response(
+     *       response=403,
+     *       description="No autorizado"
+     *    ),
+     *    @OA\Response(
+     *       response=404,
+     *       description="Item no encontrado"
+     *    )
+     * )
+     */
     public function update(UpdatecartitemRequest $request,CartItem $cartitem){
         $this->authorize('Editar item_carrito');
 
@@ -55,6 +170,36 @@ class CartitemController extends Controller
         return response()->json(new CartItemsResource($cartitem), Response::HTTP_ACCEPTED);// respuesta 202
     }
 
+    /**
+     * @OA\Delete(
+     *    path="/api/cartitems/{cartitem}",
+     *    summary="Eliminar item del carrito",
+     *    description="Elimina un item del carrito existente",
+     *    tags={"CartItems"},
+     *    security={{"bearer_token":{}}},
+     *    @OA\Parameter(
+     *       name="cartitem",
+     *       in="path",
+     *       description="ID del item del carrito",
+     *       required=true,
+     *       @OA\Schema(
+     *           type="integer"
+     *       )
+     *    ),
+     *    @OA\Response(
+     *       response=204,
+     *       description="Item eliminado",
+     *    ),
+     *    @OA\Response(
+     *       response=403,
+     *       description="No autorizado"
+     *    ),
+     *    @OA\Response(
+     *       response=404,
+     *       description="Item no encontrado"
+     *    )
+     * )
+     */
     public function destroy(CartItem $cartitem){
         $this->authorize('Eliminar item_carrito');
         

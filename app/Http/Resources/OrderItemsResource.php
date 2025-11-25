@@ -27,7 +27,7 @@ class OrderItemsResource extends JsonResource
                 'precio unitario' => $this->precio_unitario,
             ],
             'relaciones' => [ 
-                'order' => new OrdersResource($this->whenLoaded('order')),
+                //'order' => new OrdersResource($this->whenLoaded('order')),
                 'product' => new ProductsResource($this->whenLoaded('product')),
             ],
         ];
