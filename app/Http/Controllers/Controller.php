@@ -14,7 +14,7 @@ namespace App\Http\Controllers;
  *     in="header",
  *     name="Authorization"
  * )
- * @OA\Server(url="http://localhost:8000")
+ * @OA\Server(url="https://panaderia-la-esmeralda.onrender.com")
  */
 
 abstract class Controller
