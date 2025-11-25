@@ -170,6 +170,7 @@ return [
         */
         'securityDefinitions' => [
             'securitySchemes' => [
+                
                 /*
                 // Sanctum Authentication 
                 'bearer_token' => [ 

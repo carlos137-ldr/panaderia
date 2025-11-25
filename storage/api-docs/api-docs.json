@@ -1,0 +1,1409 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Documentation",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000"
+        }
+    ],
+    "paths": {
+        "/api/branches": {
+            "get": {
+                "tags": [
+                    "Branches"
+                ],
+                "summary": "Consultar sucursales",
+                "description": "Retorna todas las sucursales",
+                "operationId": "76938a0089ac92cfb2e0fb40af32c73b",
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Branches"
+                ],
+                "summary": "Crear sucursal",
+                "description": "Crea una nueva sucursal",
+                "operationId": "582a679c4adf05c5fdb745be9100e5d6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "direccion"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Sucursal Centro"
+                                    },
+                                    "direccion": {
+                                        "type": "string",
+                                        "example": "Av. Principal 123"
+                                    },
+                                    "telefono": {
+                                        "type": "string",
+                                        "example": "555-1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Sucursal creada"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/branches/{branch}": {
+            "get": {
+                "tags": [
+                    "Branches"
+                ],
+                "summary": "Consultar una sucursal",
+                "description": "Retorna una sucursal específica",
+                "operationId": "5ce397d53def55d3db5ea6c4d928f87d",
+                "parameters": [
+                    {
+                        "name": "branch",
+                        "in": "path",
+                        "description": "ID de la sucursal",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa"
+                    },
+                    "404": {
+                        "description": "Sucursal no encontrada"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Branches"
+                ],
+                "summary": "Actualizar sucursal",
+                "description": "Actualiza una sucursal existente",
+                "operationId": "111cd4c99318763a36068408c93ad026",
+                "parameters": [
+                    {
+                        "name": "branch",
+                        "in": "path",
+                        "description": "ID de la sucursal",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Sucursal Norte"
+                                    },
+                                    "direccion": {
+                                        "type": "string",
+                                        "example": "Calle 456"
+                                    },
+                                    "telefono": {
+                                        "type": "string",
+                                        "example": "555-5678"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Sucursal actualizada"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Sucursal no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Branches"
+                ],
+                "summary": "Eliminar sucursal",
+                "description": "Elimina una sucursal existente",
+                "operationId": "bb8d9aa1a9983fb94d8d1868d0da6ae4",
+                "parameters": [
+                    {
+                        "name": "branch",
+                        "in": "path",
+                        "description": "ID de la sucursal",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Sucursal eliminada"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Sucursal no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/carts": {
+            "get": {
+                "tags": [
+                    "Carts"
+                ],
+                "summary": "Consultar carritos",
+                "description": "Retorna todos los carritos",
+                "operationId": "082ccb576b0f3887aeea5ab4ad1e76b8",
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Carts"
+                ],
+                "summary": "Crear carrito",
+                "description": "Crea un nuevo carrito",
+                "operationId": "3dfdfabc59b4f5159eacaff7b56d91b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Carrito creado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/carts/{cart}": {
+            "get": {
+                "tags": [
+                    "Carts"
+                ],
+                "summary": "Consultar un carrito",
+                "description": "Retorna un carrito específico",
+                "operationId": "9de67301b4c4fa527da646cdeea2a0f7",
+                "parameters": [
+                    {
+                        "name": "cart",
+                        "in": "path",
+                        "description": "ID del carrito",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa"
+                    },
+                    "404": {
+                        "description": "Carrito no encontrado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Carts"
+                ],
+                "summary": "Actualizar carrito",
+                "description": "Actualiza un carrito existente",
+                "operationId": "70f8d79e936832aa230907518b7b2cc5",
+                "parameters": [
+                    {
+                        "name": "cart",
+                        "in": "path",
+                        "description": "ID del carrito",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Carrito actualizado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Carrito no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Carts"
+                ],
+                "summary": "Eliminar carrito",
+                "description": "Elimina un carrito existente",
+                "operationId": "8d7f0d90ac93117163d7e8844fd4c860",
+                "parameters": [
+                    {
+                        "name": "cart",
+                        "in": "path",
+                        "description": "ID del carrito",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Carrito eliminado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Carrito no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/cartitems": {
+            "get": {
+                "tags": [
+                    "CartItems"
+                ],
+                "summary": "Consultar items del carrito",
+                "description": "Retorna todos los items del carrito",
+                "operationId": "1609f64f0418d7d94f39d857a4405017",
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "CartItems"
+                ],
+                "summary": "Agregar item al carrito",
+                "description": "Crea un nuevo item en el carrito",
+                "operationId": "406ac7f1752e1884aa2862bd042c0a22",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "cart_id",
+                                    "product_id",
+                                    "cantidad"
+                                ],
+                                "properties": {
+                                    "cart_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "product_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "cantidad": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Item creado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/cartitems/{cartitem}": {
+            "get": {
+                "tags": [
+                    "CartItems"
+                ],
+                "summary": "Consultar un item del carrito",
+                "description": "Retorna un item del carrito específico",
+                "operationId": "c2389b2cc61892a7f951b0444ad414be",
+                "parameters": [
+                    {
+                        "name": "cartitem",
+                        "in": "path",
+                        "description": "ID del item del carrito",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa"
+                    },
+                    "404": {
+                        "description": "Item no encontrado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "CartItems"
+                ],
+                "summary": "Actualizar item del carrito",
+                "description": "Actualiza un item existente en el carrito",
+                "operationId": "e1706c4aa82affae17ee9c4818700131",
+                "parameters": [
+                    {
+                        "name": "cartitem",
+                        "in": "path",
+                        "description": "ID del item del carrito",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "cart_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "product_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "cantidad": {
+                                        "type": "integer",
+                                        "example": 3
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Item actualizado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Item no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "CartItems"
+                ],
+                "summary": "Eliminar item del carrito",
+                "description": "Elimina un item del carrito existente",
+                "operationId": "26dbfad5aab654ed7cb26e40af259851",
+                "parameters": [
+                    {
+                        "name": "cartitem",
+                        "in": "path",
+                        "description": "ID del item del carrito",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Item eliminado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Item no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Iniciar sesión",
+                "description": "Inicia sesión y retorna un token de acceso",
+                "operationId": "7fe7085e1df995c6c2ee884a80eb30d6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "correo",
+                                    "contraseña",
+                                    "dispositivo"
+                                ],
+                                "properties": {
+                                    "correo": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "usuario@example.com"
+                                    },
+                                    "contraseña": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "dispositivo": {
+                                        "type": "string",
+                                        "example": "iphone"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login exitoso"
+                    },
+                    "422": {
+                        "description": "Credenciales incorrectas"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            }
+        },
+        "/api/orders": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Consultar todas las órdenes",
+                "description": "Retorna todas las órdenes",
+                "operationId": "955bb77a45ae173a485fadb8befed93f",
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "No se encontraron órdenes"
+                    },
+                    "405": {
+                        "description": "Método no permitido"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Crear orden",
+                "description": "Crear una nueva orden",
+                "operationId": "2123ba58dadb22bd6f2c8081af562230",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "branch_id",
+                                    "fecha_pedido",
+                                    "fecha_recogida",
+                                    "estado",
+                                    "total"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "branch_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "fecha_pedido": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-10-27"
+                                    },
+                                    "fecha_recogida": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-10-28"
+                                    },
+                                    "estado": {
+                                        "type": "string",
+                                        "example": "pendiente"
+                                    },
+                                    "total": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 150.5
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Orden creada"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/orders/{order}": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Consultar una orden",
+                "description": "Retorna una orden específica",
+                "operationId": "8114ac185cc1bf301d8862617e497098",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "in": "path",
+                        "description": "ID de la orden",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa"
+                    },
+                    "404": {
+                        "description": "Orden no encontrada"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Actualizar orden",
+                "description": "Actualizar una orden existente",
+                "operationId": "451beac48796437035c70268bc39ee41",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "in": "path",
+                        "description": "ID de la orden",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "branch_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "fecha_pedido": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-10-27"
+                                    },
+                                    "fecha_recogida": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-10-28"
+                                    },
+                                    "estado": {
+                                        "type": "string",
+                                        "example": "preparando"
+                                    },
+                                    "total": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 150.5
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Orden actualizada"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Orden no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Eliminar orden",
+                "description": "Elimina una orden existente",
+                "operationId": "983c7813fdcb0d66fd5d1386fa8f6f22",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "in": "path",
+                        "description": "ID de la orden",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Orden eliminada"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Orden no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/orderitems": {
+            "get": {
+                "tags": [
+                    "OrderItems"
+                ],
+                "summary": "Consultar todos los items de orden",
+                "description": "Retorna todos los items de orden",
+                "operationId": "57d67e1dd35a19d47dd8178eb254621e",
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "No se encontraron items"
+                    },
+                    "405": {
+                        "description": "Método no permitido"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "OrderItems"
+                ],
+                "summary": "Crear item de orden",
+                "description": "Crear un nuevo item de orden",
+                "operationId": "32eae6df28d76229deca5bc0ed820210",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "order_id",
+                                    "product_id",
+                                    "cantidad",
+                                    "precio_unitario"
+                                ],
+                                "properties": {
+                                    "order_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "product_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "cantidad": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "precio_unitario": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 15.5
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Item creado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/orderitems/{orderitem}": {
+            "get": {
+                "tags": [
+                    "OrderItems"
+                ],
+                "summary": "Consultar un item de orden",
+                "description": "Retorna un item de orden específico",
+                "operationId": "4829fb193d059222e610aafa9249a8d7",
+                "parameters": [
+                    {
+                        "name": "orderitem",
+                        "in": "path",
+                        "description": "ID del item de orden",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa"
+                    },
+                    "404": {
+                        "description": "Item no encontrado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "OrderItems"
+                ],
+                "summary": "Actualizar item de orden",
+                "description": "Actualizar un item de orden existente",
+                "operationId": "00481fbca576cc3fffebc2e9b582b059",
+                "parameters": [
+                    {
+                        "name": "orderitem",
+                        "in": "path",
+                        "description": "ID del item de orden",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "order_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "product_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "cantidad": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "precio_unitario": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 15.5
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Item actualizado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Item no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "OrderItems"
+                ],
+                "summary": "Eliminar item de orden",
+                "description": "Elimina un item de orden existente",
+                "operationId": "186caee0c62728042869ce6c5ab37506",
+                "parameters": [
+                    {
+                        "name": "orderitem",
+                        "in": "path",
+                        "description": "ID del item de orden",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Item eliminado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Item no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Consultar todos los productos",
+                "description": "Retorna todos los productos",
+                "operationId": "d97d1c3727cbac49708b85f7d11f7d58",
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "No se encontraron productos"
+                    },
+                    "405": {
+                        "description": "Método no permitido"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Crear producto",
+                "description": "Crear un nuevo producto",
+                "operationId": "785644b7d7dd38af4b51dafd0fbc1b6d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "precio",
+                                    "stock",
+                                    "imagen"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Concha"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Pan dulce tradicional"
+                                    },
+                                    "precio": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 12.5
+                                    },
+                                    "stock": {
+                                        "type": "integer",
+                                        "example": 50
+                                    },
+                                    "imagen": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Producto creado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/products/{product}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Consultar un producto",
+                "description": "Retorna un producto específico",
+                "operationId": "db00b523e69d5dbc09c6edad76374bdc",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "ID del producto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa"
+                    },
+                    "404": {
+                        "description": "Producto no encontrado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Actualizar producto",
+                "description": "Actualizar un producto existente",
+                "operationId": "525bf6203301bf5a9fae0c6ca351cba0",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "ID del producto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "type": "string",
+                                        "example": "PUT"
+                                    },
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Concha"
+                                    },
+                                    "descripcion": {
+                                        "type": "string",
+                                        "example": "Pan dulce tradicional"
+                                    },
+                                    "precio": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 12.5
+                                    },
+                                    "stock": {
+                                        "type": "integer",
+                                        "example": 50
+                                    },
+                                    "imagen": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Producto actualizado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Producto no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Eliminar producto",
+                "description": "Elimina un producto existente",
+                "operationId": "ac878db81fdb1333b21fc79e574a5a17",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "ID del producto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Producto eliminado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Producto no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "name": "Authorization",
+                "in": "header",
+                "bearerFormat": "token",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Branches",
+            "description": "Branches"
+        },
+        {
+            "name": "Carts",
+            "description": "Carts"
+        },
+        {
+            "name": "CartItems",
+            "description": "CartItems"
+        },
+        {
+            "name": "Login",
+            "description": "Login"
+        },
+        {
+            "name": "Orders",
+            "description": "Orders"
+        },
+        {
+            "name": "OrderItems",
+            "description": "OrderItems"
+        },
+        {
+            "name": "Products",
+            "description": "Products"
+        }
+    ]
+}
