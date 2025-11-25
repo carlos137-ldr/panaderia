@@ -161,7 +161,7 @@ class BranchController extends Controller
     public function update(UpdateBranchRequest $request, Branch $branch)
     {
         $this->authorize('Editar sucursal');
-        // $this->authorize('update', $branch); // Descomentar si tienes Policy específica para la instancia
+         $this->authorize('update', $branch); // Descomentar si tienes Policy específica para la instancia
 
         $branch->update($request->validated());
         
