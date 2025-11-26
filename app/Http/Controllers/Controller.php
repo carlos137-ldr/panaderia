@@ -14,7 +14,7 @@ namespace App\Http\Controllers;
  *     in="header",
  *     name="Authorization"
  * )
- * @OA\Server(url="https://panaderia-production-46f9.up.railway.app")
+ * @OA\Server(url="https://panaderia-production-8071.up.railway.app")
  */
 
 abstract class Controller
