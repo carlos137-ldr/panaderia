@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://panaderia-la-esmeralda.onrender.com/', '*'],
+    'allowed_origins' => ['https://panaderia-production-46f9.up.railway.app', '*'],
 
     'allowed_origins_patterns' => [],
 
