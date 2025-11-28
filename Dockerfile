@@ -13,7 +13,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
-    libzip-dev
+    libzip-dev \
+    mariadb-client
 
 # Instala extensiones de PHP requeridas
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
@@ -29,7 +30,7 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 # Permitir .htaccess
 RUN sed -i '/<Directory ${APACHE_DOCUMENT_ROOT}>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
-# Cambiar Apache para que escuche el puerto de Railway (8080)
+# Cambiar Apache para que escuche el puerto 8080
 RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf
 RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:8080>/' /etc/apache2/sites-available/000-default.conf
 
@@ -48,10 +49,14 @@ RUN composer install --no-interaction --optimize-autoloader --no-dev
 # Permisos
 RUN chown -R www-data:www-data storage bootstrap/cache
 
+# Dar permisos al entrypoint
+RUN chmod +x docker/entrypoint.sh
+
 # Puerto que usará Railway
 ENV PORT=8080
 EXPOSE 8080
 
-# Ejecutar migraciones automáticamente
-RUN php artisan migrate --force || true
+RUN chmod +x /var/www/html/docker/entrypoint.sh
 
+# Ejecutar entrypoint custom
+CMD ["bash", "docker/entrypoint.sh"]
