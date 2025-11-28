@@ -52,6 +52,11 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 ENV PORT=8080
 EXPOSE 8080
 
-# Ejecutar migraciones automáticamente
-RUN php artisan migrate --force || true
+# ❌ NO EJECUTAR MIGRACIONES AQUÍ
+# ❌ NUNCA PONER php artisan migrate EN BUILD
+# Railway NO puede conectar la DB en build
+# Por eso NO debe estar:
+# RUN php artisan migrate --force
 
+# Comando final al iniciar el contenedor
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
