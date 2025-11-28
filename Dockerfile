@@ -1,5 +1,10 @@
+# Etapa 1: Imagen oficial de Composer
+FROM composer:2 AS composer_stage
+
+# Etapa 2: Imagen PHP con Apache
 FROM php:8.2-apache
 
+# Instala dependencias del sistema necesarias
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
@@ -8,18 +13,39 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
-    libzip-dev \
-    && docker-php-ext-install pdo pdo_mysql zip
+    libzip-dev
 
+# Instala extensiones de PHP requeridas
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+
+# Habilita el módulo rewrite (Laravel lo necesita)
 RUN a2enmod rewrite
 
-COPY . /var/www/html
+# Define DocumentRoot apuntando a /public
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
+# Permitir .htaccess
+RUN sed -i '/<Directory ${APACHE_DOCUMENT_ROOT}>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+
+# Copia Composer desde la etapa 1
+COPY --from=composer_stage /usr/bin/composer /usr/bin/composer
+
+# Establece el directorio de trabajo
 WORKDIR /var/www/html
 
-RUN composer install --no-interaction --optimize-autoloader
+# Copia archivos del proyecto
+COPY . .
 
-RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+# Instala dependencias de Laravel
+RUN composer install --no-interaction --optimize-autoloader --no-dev
 
-ENV PORT=80
+# Permisos
+RUN chown -R www-data:www-data storage bootstrap/cache
+
+# Puerto
 EXPOSE 80
+
+# Inicia Apache
+CMD ["apache2-foreground"]
