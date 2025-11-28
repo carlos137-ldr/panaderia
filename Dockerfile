@@ -56,7 +56,7 @@ RUN chmod +x docker/entrypoint.sh
 ENV PORT=8080
 EXPOSE 8080
 
-RUN chmod +x /var/www/html/docker/entrypoint.sh
+
 
 # Ejecutar entrypoint custom
 CMD ["bash", "docker/entrypoint.sh"]
