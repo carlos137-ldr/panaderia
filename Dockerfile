@@ -52,5 +52,9 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 ENV PORT=8080
 EXPOSE 8080
 
+# Ejecutar migraciones automáticamente
+RUN php artisan migrate --force || true
+
 # Inicia Apache
 CMD ["apache2-foreground"]
+
