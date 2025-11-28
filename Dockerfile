@@ -1,7 +1,10 @@
-# Usa una imagen oficial de PHP con Apache
+# Etapa 1: Imagen oficial de Composer
+FROM composer:2 AS composer_stage
+
+# Etapa 2: Imagen PHP con Apache
 FROM php:8.2-apache
 
-# Instala dependencias del sistema necesarias para Laravel
+# Instala dependencias del sistema necesarias
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
@@ -10,32 +13,47 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
-    libzip-dev \
-    mariadb-client
+    libzip-dev
 
-# Instalar extensiones de PHP
-RUN docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl bcmath gd
+# Instala extensiones de PHP requeridas
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# Habilitar mod_rewrite para Laravel
+# Habilita el módulo rewrite (Laravel lo necesita)
 RUN a2enmod rewrite
 
-# Copiar archivos del proyecto
-COPY . /var/www/html
+# Define DocumentRoot apuntando a /public
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
-# Establecer permisos correctos
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Permitir .htaccess
+RUN sed -i '/<Directory ${APACHE_DOCUMENT_ROOT}>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
-# Instalar Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+# Cambiar Apache para que escuche el puerto de Railway (8080)
+RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf
+RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:8080>/' /etc/apache2/sites-available/000-default.conf
 
-# Instalar dependencias Laravel
-RUN composer install --optimize-autoloader --no-dev
+# Copia Composer desde la etapa 1
+COPY --from=composer_stage /usr/bin/composer /usr/bin/composer
 
-# Optimizar Laravel
-RUN php artisan config:clear
-RUN php artisan route:clear
-RUN php artisan view:clear
-RUN php artisan optimize
+# Establece el directorio de trabajo
+WORKDIR /var/www/html
 
-# 🔥 Ejecutar migraciones ANTES de arrancar Apache
-CMD php artisan migrate --force && apache2-foreground
+# Copia archivos del proyecto
+COPY . .
+
+# Instala dependencias de Laravel
+RUN composer install --no-interaction --optimize-autoloader --no-dev
+
+# Permisos
+RUN chown -R www-data:www-data storage bootstrap/cache
+
+# Puerto que usará Railway
+ENV PORT=8080
+EXPOSE 8080
+
+# Ejecutar migraciones automáticamente
+RUN php artisan migrate --force || true
+
+
+
